@@ -51,7 +51,8 @@ def main():
         opcao = input('Opção: ')
         if opcao == '1':
             nome = input('Nome do Professor: ')
-            Professor.adicionar_prof(nome)
+            id = input('Digite o ID do professor: ')
+            Professor.adicionar_prof(nome, id)
         elif opcao == '2':
             Professor.consultar_prof()
         elif opcao == '3':
