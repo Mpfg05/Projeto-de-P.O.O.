@@ -160,15 +160,15 @@ def main():
     while True:
         print('\nEscolha uma opção:')
         print('1. Adicionar Aluno')
-        print('2. Consultar Alunos')
-        print('3. Adicionar Turma')
-        print('4. Consultar Turmas')
-        print('5. Adicionar Aluno a uma Turma')
-        print('6. Consultar Alunos por Turma')
-        print('7. Adicionar Professor')
-        print('8. Consultar Professores')
-        print('9. Adicionar Professor a uma Turma')
-        print('10. Consultar Professores por Turma')
+        print('2. Adicionar Turma')
+        print('3. Adicionar Professor')
+        print('4. Consultar Aluno')
+        print('5. Consultar Tuumas')
+        print('6. Consultar Professor')
+        print('7. Adicionar aluno a turma')
+        print('8. adicionar professor a turma')
+        print('9. consultar lista de alunos da turma')
+        print('10. Consultar Professore por Turma')
         print('20. Sair')
 
         opcao = input('Opção: ')
@@ -179,42 +179,47 @@ def main():
             idade = int(input('Idade do Aluno: '))
             adicionar_aluno(ra, nome, idade)
 
-        elif opcao == '2':
-            print("Lista de Alunos:")
-            consultar_alunos()
 
-        elif opcao == '3':
+        elif opcao == '2':
             rt = input('RT da Turma: ')
             ano = input('Ano da Turma: ')
             classe = input('Classe da Turma: ')
             adicionar_turma(rt, ano, classe)
 
-        elif opcao == '4':
-            print("Lista de Turmas:")
-            consultar_turmas()
-
-        elif opcao == '5':
-            aluno_ra = input('RA do Aluno: ')
-            turma_rt = input('RT da Turma: ')
-            adicionar_aluno_a_turma(aluno_ra, turma_rt)
-
-        elif opcao == '6':
-            turma_rt = input('RT da Turma: ')
-            consultar_alunos_por_turma(turma_rt)
-
-        elif opcao == '7':
+        elif opcao == '3':
             rp = int(input('RP do Professor: '))
             nome = input('Nome do Professor: ')
             adicionar_professor(rp, nome)
 
-        elif opcao == '8':
+
+
+        elif opcao == '4':
+            print("Lista de Alunos:")
+            consultar_alunos()
+
+
+        elif opcao == '5':
+            print("Lista de Turmas:")
+            consultar_turmas()
+
+        elif opcao == '6':
             print("Lista de Professores:")
             consultar_professores()
 
-        elif opcao == '9':
+
+        elif opcao == '7':
+            aluno_ra = input('RA do Aluno: ')
+            turma_rt = input('RT da Turma: ')
+            adicionar_aluno_a_turma(aluno_ra, turma_rt)
+
+        elif opcao == '8':
             professor_rp = int(input('RP do Professor: '))
             turma_rt = input('RT da Turma: ')
             adicionar_professor_a_turma(professor_rp, turma_rt)
+
+        elif opcao == '9':
+            turma_rt = input('RT da Turma: ')
+            consultar_alunos_por_turma(turma_rt)
 
         elif opcao == '10':
             turma_rt = input('RT da Turma: ')
