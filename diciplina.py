@@ -230,7 +230,7 @@ def main():
             turma_rt = input('RT da Turma: ')
             consultar_professor_por_turma(turma_rt)
 
-        elif opcao == '20' or opcao == 'Sair' or == 'sair':
+        elif opcao == '20' or opcao == 'Sair' or opcao == 'sair':
             break
 
         else:
