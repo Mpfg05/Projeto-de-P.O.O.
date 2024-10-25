@@ -159,16 +159,21 @@ def consultar_professor_por_turma(turma_rt):
 def main():
     while True:
         print('\nEscolha uma opção:')
+        print("-----------------------------")
         print('1. Adicionar Aluno')
         print('2. Adicionar Turma')
         print('3. Adicionar Professor')
+        print("-----------------------------")
         print('4. Consultar Aluno')
         print('5. Consultar Tuumas')
         print('6. Consultar Professor')
+        print("-----------------------------")
         print('7. Adicionar aluno a turma')
         print('8. adicionar professor a turma')
+        print("-----------------------------")
         print('9. consultar lista de alunos da turma')
         print('10. Consultar Professore por Turma')
+        print("-----------------------------")
         print('20. Sair')
 
         opcao = input('Opção: ')
