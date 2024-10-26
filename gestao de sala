@@ -172,65 +172,68 @@ def main():
         print('8. Adicionar professor a turma')
         print("-----------------------------")
         print('9. Consultar lista de alunos da turma')
-        print('10. Consultar Professore por Turma')
+        print('10. Consultar Professor por Turma')
         print("-----------------------------")
         print('20. Sair')
 
         opcao = input('Opção: ')
 
-        if opcao == '1':
+        if opcao == '1' or opcao == 'Adicionar Aluno' or opcao == 'adicionar aluno' or opcao == 'Adicionar aluno':
+            print("RA é o codigo indentificador do Aluno")  
             ra = input('RA do Aluno: ')
             nome = input('Nome do Aluno: ')
             idade = int(input('Idade do Aluno: '))
             adicionar_aluno(ra, nome, idade)
 
 
-        elif opcao == '2':
+        elif opcao == '2' or opcao == 'Adicionar Turma' or opcao == 'Adicionar turma' or opcao == 'adicionar turma':
+            print("RT é o codigo indentificador da turma")
             rt = input('RT da Turma: ')
             ano = input('Ano da Turma: ')
             classe = input('Classe da Turma: ')
             adicionar_turma(rt, ano, classe)
 
-        elif opcao == '3':
-            rp = int(input('RP do Professor: '))
+        elif opcao == '3' or opcao == 'Adicionar Professor' or opcao == 'Adicionar professor' or opcao == 'adicionar professor':
+            print("RP é o codigo indentificador do Professor")
+            rp = input('RP do Professor: ')
             nome = input('Nome do Professor: ')
             adicionar_professor(rp, nome)
 
 
 
-        elif opcao == '4':
+        elif opcao == '4' or opcao == 'Consultar Aluno' or opcao == 'Consultar aluno' or opcao == 'consultar aluno' :
             print("Lista de Alunos:")
             consultar_alunos()
 
 
-        elif opcao == '5':
+        elif opcao == '5' or opcao == 'Consultar Turma' or opcao == 'Consultar turma' or opcao == 'consultar turma':
             print("Lista de Turmas:")
             consultar_turmas()
 
-        elif opcao == '6':
+        elif opcao == '6' or opcao == 'Consultar Professor' or opcao == 'Consultar professor' or opcao == 'consultar professor':
             print("Lista de Professores:")
             consultar_professores()
 
 
-        elif opcao == '7':
+        elif opcao == '7' or opcao == 'Adicionar Aluno a Turma' or opcao == 'Adicionar Aluno a turma' or opcao == 'Adicionar aluno a turma' or opcao == 'adicionar aluno a turma':
             aluno_ra = input('RA do Aluno: ')
             turma_rt = input('RT da Turma: ')
             adicionar_aluno_a_turma(aluno_ra, turma_rt)
 
-        elif opcao == '8':
+        elif opcao == '8' or opcao == 'Adicionar Professor a Turma' or opcao == 'Adicionar Professor a turma' or opcao == 'Adicionar professor a turma' or opcao == 'adicionar professor a turma':
             professor_rp = int(input('RP do Professor: '))
             turma_rt = input('RT da Turma: ')
             adicionar_professor_a_turma(professor_rp, turma_rt)
 
-        elif opcao == '9':
+        elif opcao == '9' or opcao == 'Consultar Lista de Alunos da Turma' or opcao == 'Consultar Lista de Alunos da turma' or opcao == 'Consultar Lista de alunos da turma' or opcao == 'consultar lista de alunos da turma':
             turma_rt = input('RT da Turma: ')
             consultar_alunos_por_turma(turma_rt)
 
-        elif opcao == '10':
+        elif opcao == '10' or opcao == 'Consultar Professor por Turma' or opcao == 'Consultar Professor por turma' or opcao == 'Consultar professor por Turma' or opcao == 'consultar professor por turma':
             turma_rt = input('RT da Turma: ')
             consultar_professor_por_turma(turma_rt)
 
-        elif opcao == '20':
+        elif opcao == '20' or opcao == 'Sair' or opcao == 'sair':
             break
 
         else:
