@@ -1,0 +1,58 @@
+from sqlalchemy import Column, Integer, String, ForeignKey, Float
+from sqlalchemy.orm import relationship
+from sqlalchemy.ext.declarative import declarative_base
+
+Base = declarative_base()
+
+class Aluno(Base):
+    __tablename__ = 'alunos'
+
+    ra = Column(String, primary_key=True)   
+    nome = Column(String)                     
+#relacionamentos   
+    notas = relationship("Nota", back_populates="aluno")
+    
+        
+ class Disciplina(Base):
+     __tablename__ = "disciplinas"
+     id = Column(Integer, primaryKey=True)
+     nome = Column(String)
+  #relacionamentos
+     notas = relationship("Nota", back_populates="disciplina")
+     
+        
+class Nota(Base):
+    __tablename__ = "notas"
+    id = Column(Integer, primary_key=True)
+    aluno_id = Column(Integer, ForeignKey('alunos.id'))
+    disciplina_id = Column(Integer, ForeignKey('disciplinas.id'))
+    valor = Column(Float, nullable=False)      
+ #relacionamentos
+   aluno = relationship("Aluno", back_populates="notas")
+   disciplina = relationship("Disciplina", back_populates="notas")
+    
+    
+Base.metadata.create_all(engine)
+    
+# Funções CRUD
+  def adicionar_aluno(ra, nome):
+      try:
+          novo_aluno = Aluno(ra=ra, nome=nome)
+          session.add(novo_aluno)
+          session.commit()
+          print(f"Aluno {nome} adicionado com sucesso!")
+      except IntegrityError:   #O tratamento da exceção IntegrityError é importante para garantir que o sistema lida corretamente com situações,
+  # em que um registro não pode ser adicionado devido a restrições de integridade, como a duplicação de chaves primárias.
+          session.rollback()
+          print(f"Erro: RA {ra} já existe!")    
+    
+    
+  def adicionar_disciplina(nome):
+     try:
+         nova_disciplina = Disciplina(nome=nome)
+         session.add(nova_disciplina)
+         session.commit()
+         print(f"Disciplina {nome} adicionada com sucesso!")
+     except IntegrityError:
+         session.rollback()
+         print(f"Erro: Disciplina {nome} já existe!")   
