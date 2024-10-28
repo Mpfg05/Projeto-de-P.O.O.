@@ -81,7 +81,9 @@ Base.metadata.create_all(engine)
         else: 
            print(f"Erro: Aluno com RA '{aluno_RA}' não encontrado.")
            return  # Interrompe a função se o aluno não existir
-        
+            
+            
+            
             
   # Solicitar a nota ao usuário
         valor = float(input("Digite a nota do aluno: "))
@@ -101,4 +103,32 @@ Base.metadata.create_all(engine)
   def listar_alunos():
       alunos = session.query(Aluno).all()  # Consulta todos os alunos da tabela 'alunos'
        for aluno in alunos:                  # Itera sobre cada aluno retornado
-           print(f"RA: {aluno.ra}, Nome: {aluno.nome}")  # Imprime o RA e o Nome do alunop
+           print(f"RA: {aluno.ra}, Nome: {aluno.nome}")  # Imprime o RA e o Nome do aluno
+           
+           
+ def listar_disiplinas():
+     disciplinas = session.query(Disciplina).all()
+      for disciplina in disciplinas:
+          print(f"/nDisciplina: {disciplina.nome} e seu ID: {disciplina.id}")         
+          
+          
+ def listar_notas():
+     notas = session.query(Nota).all()
+      for nota in notas:
+          print(f"O Aluno {aluno.nome}, RA: {aluno.id}, Disciplina: {disciplina.nome} ,Disciplina ID: {nota.disciplina_id}, Valor: {nota.valor}")    
+          
+          
+ # Interface de usuário
+ def main():
+     while True:
+         print("\nGerenciamento de Alunos, Disciplinas e Notas.")
+         print("1. Adicionar Aluno")
+         print("2. Adicionar Disciplina")
+         print("3. Adicionar Nota")
+         print("4. Listar Alunos")
+         print("5. Listar Disciplinas")
+         print("6. Listar Notas")
+         print("7. Sair")
+
+         opcao = input("Escolha uma opção: ")
+                 
