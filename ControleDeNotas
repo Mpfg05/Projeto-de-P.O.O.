@@ -7,9 +7,9 @@ Base = declarative_base()
 class Aluno(Base):
     __tablename__ = 'alunos'
 
-    ra = Column(String, primary_key=True)   
-    nome = Column(String)                     
-#relacionamentos   
+    ra = Column(String, primary_key=True)    # RA do aluno, é o numero que permite adiconar o aluno a lista
+    nome = Column(String)                     # Nome do aluno
+    
     notas = relationship("Nota", back_populates="aluno")
     
         
@@ -17,7 +17,6 @@ class Aluno(Base):
      __tablename__ = "disciplinas"
      id = Column(Integer, primaryKey=True)
      nome = Column(String)
-  #relacionamentos
      notas = relationship("Nota", back_populates="disciplina")
      
         
@@ -27,7 +26,7 @@ class Nota(Base):
     aluno_id = Column(Integer, ForeignKey('alunos.id'))
     disciplina_id = Column(Integer, ForeignKey('disciplinas.id'))
     valor = Column(Float, nullable=False)      
- #relacionamentos
+    
    aluno = relationship("Aluno", back_populates="notas")
    disciplina = relationship("Disciplina", back_populates="notas")
     
@@ -56,3 +55,50 @@ Base.metadata.create_all(engine)
      except IntegrityError:
          session.rollback()
          print(f"Erro: Disciplina {nome} já existe!")   
+         
+         
+         
+  def adicionar_nota(nome_disciplina,aluno_RA):
+     try: 
+         # Buscar a disciplina pelo nome e atribuir à variável
+        disciplina = session.query(Disciplina).filter_by(nome=nome_disciplina).first()
+
+# Agora, verifique se a disciplina foi encontrada
+        if disciplina:
+    # A disciplina foi encontrada, você pode prosseguir
+           print(f"Disciplina '{nome_disciplina}' encontrada.")
+        else:
+    # A disciplina não foi encontrada
+           print(f"Erro: Disciplina '{nome_disciplina}' não encontrada.")
+             return  # Interrompe a função se a disciplina não existir
+             
+             
+        aluno = session.query(Aluno).filter_by(ra=aluno_RA).first()     
+        
+        if aluno:
+           print(f"Aluno com RA '{aluno_RA}' encontrado!") 
+          
+        else: 
+           print(f"Erro: Aluno com RA '{aluno_RA}' não encontrado.")
+           return  # Interrompe a função se o aluno não existir
+        
+            
+  # Solicitar a nota ao usuário
+        valor = float(input("Digite a nota do aluno: "))
+        nova_nota = Nota(aluno_id=aluno_RA, disciplina_id=disciplina.id, valor=valor)
+        session.add(nova_nota)
+        session.commit()
+        print(f"Nota {valor} adicionada para o aluno {aluno_RA} na disciplina {nome_disciplina}.")
+        
+     except ValueError:
+       print("Erro: Por favor, insira um número válido para a nota.")
+     except IntegrityError:
+       session.rollback()
+        print("Erro ao adicionar a nota. Verifique se o aluno e a disciplina existem.")
+        
+        
+  # Função para listar alunos      
+  def listar_alunos():
+      alunos = session.query(Aluno).all()  # Consulta todos os alunos da tabela 'alunos'
+       for aluno in alunos:                  # Itera sobre cada aluno retornado
+           print(f"RA: {aluno.ra}, Nome: {aluno.nome}")  # Imprime o RA e o Nome do alunop
