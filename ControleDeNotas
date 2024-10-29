@@ -1,6 +1,6 @@
 #Importa classes e funções da biblioteca SQLAlchemy, que é uma ferramenta para trabalhar com bancos de dados em Python
 from sqlalchemy import Column, Integer, String, ForeignKey, Float, create_engine #create engine: função que cria um objeto de conexão com o banco de dados.
-from sqlalchemy.orm import relationship, sessionmaker #sessionmaker: Cria uma fábrica de sessões para interagir com o banco de dados.
+from sqlalchemy.orm import relationship, sessionmaker #sessionmaker: #Cria uma fábrica de sessões para interagir com o banco de dados.
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.exc import IntegrityError
 
