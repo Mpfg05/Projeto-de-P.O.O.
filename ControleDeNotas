@@ -1,5 +1,6 @@
-from sqlalchemy import Column, Integer, String, ForeignKey, Float, create_engine
-from sqlalchemy.orm import relationship, sessionmaker
+#Importa classes e funções da biblioteca SQLAlchemy, que é uma ferramenta para trabalhar com bancos de dados em Python
+from sqlalchemy import Column, Integer, String, ForeignKey, Float, create_engine #create engine: função que cria um objeto de conexão com o banco de dados.
+from sqlalchemy.orm import relationship, sessionmaker #sessionmaker: Cria uma fábrica de sessões para interagir com o banco de dados.
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.exc import IntegrityError
 
@@ -9,10 +10,10 @@ Session = sessionmaker(bind=engine)
 session = Session()
 
 class Aluno(Base):
-    __tablename__ = 'alunos'
+    __tablename__ = 'alunos' #nome da tabela
     ra = Column(String, primary_key=True)    # RA do aluno
     nome = Column(String)                     # Nome do aluno
-    notas = relationship("Nota", back_populates="aluno")
+    notas = relationship("Nota", back_populates="aluno") # relacionamento
 
 class Disciplina(Base):
     __tablename__ = "disciplinas"
@@ -23,8 +24,8 @@ class Disciplina(Base):
 class Nota(Base):
     __tablename__ = "notas"
     id = Column(Integer, primary_key=True)
-    aluno_id = Column(String, ForeignKey('alunos.ra'))
-    disciplina_id = Column(Integer, ForeignKey('disciplinas.id'))
+    aluno_id = Column(String, ForeignKey('alunos.ra'))  # chave estrangeira
+    disciplina_id = Column(Integer, ForeignKey('disciplinas.id')) # chave estrangeira
     valor = Column(Float, nullable=False)
     aluno = relationship("Aluno", back_populates="notas")
     disciplina = relationship("Disciplina", back_populates="notas")
@@ -51,6 +52,9 @@ def adicionar_disciplina(nome):
     except IntegrityError:
         session.rollback()
         print(f"Erro: Disciplina {nome} já existe!")
+    except ValueError:
+        session.rollback()
+        print(f"Erro: Erro de valor, digite o nome de uma disciplina!")
 
 def adicionar_nota(aluno_ra, nome_disciplina, valor):
     try:
@@ -111,8 +115,18 @@ def main():
             adicionar_aluno(ra, nome)
         
         elif opcao == "2":
-            nome = input("Digite o nome da disciplina: ")
-            adicionar_disciplina(nome)
+            disciplinas_validas = {
+                "Matematica", "Geografia", "Ciências", "Língua Portuguesa",
+                "História", "Educação Física", "Artes"
+            }
+
+            nome = input("Digite o nome da disciplina: ").capitalize()  # capitaliza o nome da disciplina que o usuário digitar
+
+            if nome in disciplinas_validas:
+                print("Matéria adicionada com sucesso!")
+                adicionar_disciplina(nome)
+            else:
+                print("Matéria inválida!")
 
         elif opcao == "3":
             aluno_ra = input("Digite o RA do aluno: ")
@@ -138,4 +152,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-    
