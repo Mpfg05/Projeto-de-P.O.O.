@@ -60,7 +60,7 @@ class ProfessorTurma(Base):
 Base.metadata.create_all(engine)
 
 # Função para adicionar um aluno ao banco de dados
-def adicionar_aluno (nome, idade):
+def adicionar_aluno(nome, idade):
     ultimo_ra = session.query(Aluno).order_by(Aluno.ra.desc()).first()
     if ultimo_ra:
         novo_ra = str(int(ultimo_ra.ra) + 1)  # Incrementa o RA
@@ -82,16 +82,24 @@ def consultar_alunos():
     for aluno in alunos:
         print(f'RA: {aluno.ra}, Nome: {aluno.nome}, Idade: {aluno.idade}')
 
+
 # Função para adicionar uma turma ao banco de dados
-def adicionar_turma(rt, ano, classe):
-    turma_existente = session.query(Turma).filter_by(rt=rt).first()
+def adicionar_turma(ano, classe):
+    ultimo_rt = session.query(Turma).order_by(Turma.rt.desc()).first()
+    if ultimo_rt:
+        novo_rt = str(int(ultimo_rt.rt) + 1)  # Incrementa o RT automaticamente
+    else:
+        novo_rt = "1"  # Se não houver nenhuma turma, começa com o RT 1
+
+    turma_existente = session.query(Turma).filter_by(rt=novo_rt).first()
     if not turma_existente:
-        nova_turma = Turma(rt=rt, ano=ano, classe=classe)
+        nova_turma = Turma(rt=novo_rt, ano=ano, classe=classe)
         session.add(nova_turma)
         session.commit()
-        print(f'Turma {rt} (ano: {ano}, classe: {classe}) adicionada com sucesso!')
+        print(f'Turma {nova_turma} (ano: {ano}, classe: {classe}) adicionada com sucesso!')
     else:
-        print("Turma com RT já existe!")
+        print("Classe com RT já existente")
+
 
 # Função para listar todas as turmas cadastradas
 def consultar_turmas():
@@ -101,14 +109,23 @@ def consultar_turmas():
 
 # Função para associar um aluno a uma turma
 def adicionar_aluno_a_turma(aluno_ra, turma_rt):
-    turma_existente = session.query(Turma).filter_by(rt=rt).first()
-    if not turma_existente:
-        nova_turma = Turma(rt=rt, ano=ano, classe=classe)
-        session.add(nova_turma)
-        session.commit()
-        print(f'Turma {rt} (ano: {ano}, classe: {classe}) adicionada com sucesso!')
+    aluno = session.query(Aluno).filter_by(ra=aluno_ra).first()
+    
+    if aluno:
+        # Verifica se o aluno já pertence a alguma turma
+        if aluno.turmas:
+            print(f'O aluno {aluno.nome} (RA: {aluno.ra}) já está na turma {aluno.turmas[0].rt}.')
+        else:
+            turma_existente = session.query(Turma).filter_by(rt=turma_rt).first()
+            if turma_existente:
+                turma_existente.alunos.append(aluno)
+                session.commit()
+                print(f'Aluno {aluno.nome} (RA: {aluno.ra}) adicionado à turma {turma_existente.rt}.')
+            else:
+                print("Turma não encontrada.")
     else:
-        print("Turma com RT já existe!")
+        print("Aluno não encontrado.")
+    
 
 # Função para listar os alunos de uma turma específica
 def consultar_alunos_por_turma(turma_rt):
@@ -120,16 +137,27 @@ def consultar_alunos_por_turma(turma_rt):
     else:
         print("Turma não encontrada.")
 
+#################################################
+#################################################
+
 # Função para adicionar um professor ao banco de dados
 def adicionar_professor(rp, nome):
-    professor_existente = session.query(Professor).filter_by(rp=rp).first()
+    ultimo_rp = session.query(Professor).order_by(Professor.rp.desc()).first()
+    if ultimo_rp:
+        novo_rp = str(int(ultimo_rp.rp) + 1 ) # IIncrementa RP
+    else:
+        novo_rp = "1" # Se não houver nenhum professor, começa com o RP 1 
+        
+    professor_existente = session.query(Professor).filter_by(ra=novo_rp).first()
     if not professor_existente:
-        professor = Professor(rp=rp, nome=nome)
-        session.add(professor)
+        novo_professor = Professor(rp=novo_rp, nome=nome)
+        
+        session.add(novo_professor)
         session.commit()
         print(f'Professor {nome} (RP: {rp}) adicionado com sucesso!')
     else:
         print("Professor já existe no sistema.")
+
 
 # Função para listar todos os professores cadastrados
 def consultar_professores():
@@ -143,13 +171,21 @@ def consultar_professores():
 # Função para associar um professor a uma turma
 def adicionar_professor_a_turma(professor_rp, turma_rt):
     professor = session.query(Professor).filter_by(rp=professor_rp).first()
-    turma = session.query(Turma).filter_by(rt=turma_rt).first()
-    if professor and turma:
-        turma.professores.append(professor)
-        session.commit()
-        print(f'Professor {professor.nome} (RP: {professor.rp}) adicionado à turma {turma.rt}.')
+    
+    if professor:
+        # Verifica se o professor já pertence a alguma turma
+        if professor.turmas:
+            print(f'O professor {professor.nome} (RP: {professor.rp}) já está na turma {professor.turmas[0].rt}.')
+        else:
+            turma_existente = session.query(Turma).filter_by(rt=turma_rt).first()
+            if turma_existente:
+                turma_existente.professores.append(professor)
+                session.commit()
+                print(f'Professor {professor.nome} (RP: {professor.rp}) adicionado à turma {turma_existente.rt}.')
+            else:
+                print("Turma não encontrada.")
     else:
-        print("Professor ou Turma não encontrados.")
+        print("Professor não encontrado.")
 
 # Função para listar os professores de uma turma específica
 def consultar_professor_por_turma(turma_rt):
@@ -180,6 +216,7 @@ def remover_aluno_de_turmas():
         print(f'Aluno {aluno.nome} | (RA: {aluno.ra}) foi removido de todas as turmas e excluído do sistema.')
     else:
         print("Aluno não encontrado.")
+        
 # Função principal e menu de interação com o usuário
 def main():
     while True:
@@ -205,7 +242,6 @@ def main():
         opcao = input('Opção: ')
 
         if opcao == '1' or opcao == 'Adicionar Aluno' or opcao == 'adicionar aluno' or opcao == 'Adicionar aluno':
-            print("RA é o codigo indentificador do Aluno")  
             nome = input('Nome do Aluno: ')
             idade = int(input('Idade do Aluno: '))
             adicionar_aluno(nome, idade)
@@ -213,16 +249,14 @@ def main():
 
         elif opcao == '2' or opcao == 'Adicionar Turma' or opcao == 'Adicionar turma' or opcao == 'adicionar turma':
             print("RT é o codigo indentificador da turma")
-            rt = input('RT da Turma: ')
             ano = input('Ano da Turma: ')
             classe = input('Classe da Turma: ')
-            adicionar_turma(rt, ano, classe)
+            adicionar_turma(ano, classe)
 
         elif opcao == '3' or opcao == 'Adicionar Professor' or opcao == 'Adicionar professor' or opcao == 'adicionar professor':
             print("RP é o codigo indentificador do Professor")
-            rp = input('RP do Professor: ')
             nome = input('Nome do Professor: ')
-            adicionar_professor(rp, nome)
+            adicionar_professor(nome)
 
 
 
@@ -269,5 +303,3 @@ def main():
 
 if __name__ == "__main__":
     main()  # Executa a função principal ao iniciar o programa
-
-
