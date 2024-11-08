@@ -146,18 +146,19 @@ def consultar_professores():  #função para listar professores
         print("Ainda não há professores registrados no sistema.")  #imprime mensagem de erro
 
 # Função para associar um professor a uma turma
-def adicionar_professor_a_turma(professor_rp, turma_rt):  #função para adicionar professor a turma
-    professor = session.query(Professor).filter_by(rp=professor_rp).first() 
-    turma = session.query(Turma).filter_by(rt=turma_rt).first() 
-    if professor and turma: 
-        if professor in turma.professores: 
-            print(f'O professor {professor.nome} (RP: {professor.rp}) já está na turma {turma.rt}.') 
+def adicionar_professor_a_turma(professor_rp, turma_rt):
+    professor = session.query(Professor).filter_by(rp=professor_rp).first()
+    turma = session.query(Turma).filter_by(rt=turma_rt).first()
+    
+    if professor and turma:
+        if professor in turma.professores:
+            print(f'O professor {professor.nome} (RP: {professor.rp}) já está na turma {turma.rt}.')
         else:
-            turma.professores.append(professor) 
-            session.commit() # Salva as alterações no banco de dados
-            print(f'Professor {professor.nome} (RP: {professor.rp}) adicionado à turma {turma.rt} (ano {ano}) (classe {classe}).') 
-    else:
-        print("Professor ou Turma não encontrado(s).") 
+            turma.professores.append(professor)
+            session.commit()  # Salva as alterações no banco de dados
+            print(f'Professor {professor.nome} (RP: {professor.rp}) adicionado à turma {turma.rt}.') 
+        print("Professor ou Turma não encontrado(s).")
+
 
 # Função para listar os professores de uma turma específica
 def consultar_professor_por_turma(turma_rt):  #função para listar professores de uma turma
